@@ -33,6 +33,10 @@ auto thread_main(console::handle_tuple context, HMODULE module) noexcept -> void
 	console::write(std::format("ScriptContext: {:#X}", script_context), console::message_type::info);
 	console::write(std::format("lua_State: {:#X}", lua_state), console::message_type::info);
 
+	// auto whsj_vmt = memory::read<uintptr_t>(waiting_hybrid_scripts_job);
+	// exec::whsj_step_original = memory::vmt_hook(whsj_vmt, 5, reinterpret_cast<uintptr_t>(exec::whsj_step_hook));
+	// console::write(std::format("Hooked WaitingHybridScriptsJob.Stepped for script scheduling"), console::message_type::info);
+
 	while (true) {
 		std::string input{};
 		input.clear();

@@ -56,6 +56,12 @@ namespace memory {
 		VirtualProtect(reinterpret_cast<LPVOID>(original_func), length, old_protection, &dummy_);
 	}
 
+	static auto vmt_hook(uintptr_t vmt, size_t index, uintptr_t hook) noexcept -> uintptr_t {
+		auto func = *reinterpret_cast<uintptr_t*>(vmt + index);
+		*reinterpret_cast<uintptr_t*>(vmt + index) = hook;
+		return func;
+	}
+
 	static auto signature_scan(std::string_view pattern, std::optional<std::string_view> module_name = std::nullopt) noexcept -> uintptr_t {
 		static auto handle = GetModuleHandle(module_name.has_value() ? module_name->data() : nullptr);
 		auto base = reinterpret_cast<uintptr_t>(handle);
