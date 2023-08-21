@@ -48,7 +48,7 @@ namespace exec {
 
 		rbx::vm_load(lua_state, &compressed);
 		console::write("Called vm_load on compressed bytecode", console::message_type::info);
-		rbx::task_spawn(lua_state);
+		rbx::task_defer(lua_state);
 		console::write("Spawned new proto via lua_State", console::message_type::info);
 		rbx::pop_stack(lua_state, 1);
 		console::write("Popped proto off the stack", console::message_type::info);

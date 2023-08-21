@@ -3,8 +3,9 @@
 namespace address {
 	constexpr auto get_scheduler_singleton{ 0x7D15B0 };
 	constexpr auto get_global_state{ 0x47F1C0 };
-	constexpr auto vm_load{ 0x970FE0 };
+	constexpr auto vm_load{ 0x580FE0 };
 	constexpr auto task_spawn{ 0x580270 };
+	constexpr auto task_defer{ 0x580070 };
 }
 
 namespace offset {

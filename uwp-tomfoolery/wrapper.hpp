@@ -35,4 +35,8 @@ namespace rbx {
 	inline auto task_spawn(uintptr_t lua_state) noexcept -> int32_t {
 		return reinterpret_cast<auto (__cdecl*)(uintptr_t)->int32_t>(memory::rebase(address::task_spawn))(lua_state);
 	}
+
+	inline auto task_defer(uintptr_t lua_state) noexcept -> uintptr_t {
+		return reinterpret_cast<auto (__cdecl*)(uintptr_t)->uintptr_t>(memory::rebase(address::task_defer))(lua_state);
+	}
 }
