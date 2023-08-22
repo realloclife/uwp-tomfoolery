@@ -14,33 +14,25 @@ namespace address {
 }
 
 namespace signature {
-	constexpr auto get_scheduler_singleton{ "E8 ? ? ? ? 8B 00 90 33 C9"sv };
-	constexpr auto get_global_state{ "E8 ? ? ? ? 8B F0 8D 8D A8 FD FF FF"sv };
-	constexpr auto vm_load{ "8B C8 6A 00 83 C2 10 68 ? ? ? ? E8 ? ? ? ?"sv };
-	constexpr auto task_defer{ "55 8B EC 6A FF 68 ? ? ? ? 64 A1 00 00 00 00 50 83 EC ? A1 ? ? ? ? 33 C5 89 45 EC 53 56 57 50 8D 45 F4 64 A3 00 00 00 00 8B 7D ? C7 45 E8"sv };
+	constexpr auto get_scheduler_singleton = "E8 ? ? ? ? 8B 00 90 33 C9"sv;
+	constexpr auto get_global_state = "E8 ? ? ? ? 8B F0 8D 8D A8 FD FF FF"sv;
+	constexpr auto vm_load = "8B C8 6A 00 83 C2 10 68 ? ? ? ? E8 ? ? ? ?"sv;
+	constexpr auto task_defer = "55 8B EC 6A FF 68 ? ? ? ? 64 A1 00 00 00 00 50 83 EC ? A1 ? ? ? ? 33 C5 89 45 EC 53 56 57 50 8D 45 F4 64 A3 00 00 00 00 8B 7D ? C7 45 E8"sv;
 
 	static auto register_signatures() noexcept -> void {
-		{
-			auto sig = memory::signature_scan(get_scheduler_singleton);
-			auto offset = memory::read<uint32_t>(sig + 1);
-			address::get_scheduler_singleton = sig + 5 + offset;
-		}
+		auto sig = memory::signature_scan(get_scheduler_singleton);
+		auto offset = memory::read<uint32_t>(sig + 1);
+		address::get_scheduler_singleton = sig + 5 + offset;
 
-		{
-			auto sig = memory::signature_scan(get_global_state);
-			auto offset = memory::read<uint32_t>(sig + 1);
-			address::get_global_state = sig + 5 + offset;
-		}
+		sig = memory::signature_scan(get_global_state);
+		offset = memory::read<uint32_t>(sig + 1);
+		address::get_global_state = sig + 5 + offset;
 
-		{
-			auto sig = memory::signature_scan(vm_load);
-			auto offset = memory::read<uint32_t>(sig + 13);
-			address::vm_load = sig + 17 + offset;
-		}
+		sig = memory::signature_scan(vm_load);
+		offset = memory::read<uint32_t>(sig + 13);
+		address::vm_load = sig + 17 + offset;
 
-		{
-			address::task_defer = memory::signature_scan(task_defer);
-		}
+		address::task_defer = memory::signature_scan(task_defer);
 	}
 }
 

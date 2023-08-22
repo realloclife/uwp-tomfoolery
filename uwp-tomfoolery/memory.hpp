@@ -98,7 +98,7 @@ namespace memory {
 
 		while (start < end) {
 			auto found_pattern = true;
-			for (auto const& [wildcard, byte] : byte_pattern) {
+			for (const auto& [wildcard, byte] : byte_pattern) {
 				++start;
 				if (wildcard)
 					continue;
