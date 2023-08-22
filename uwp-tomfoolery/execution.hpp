@@ -22,7 +22,7 @@ namespace exec {
 
 	class roblox_encoder : public Luau::BytecodeEncoder {
 		inline auto encodeOp(uint8_t opcode) -> uint8_t override {
-			return uint8_t(opcode * 0xE3);
+			return opcode * 0xE3;
 		}
 	};
 
@@ -58,7 +58,7 @@ namespace exec {
 
 		rbx::set_identity(lua_state, 8); // we like to troll
 		console::write("Identitiy was set to 8");
-		std::string compressed{ reinterpret_cast<const char*>(final_destination) };
+		std::string compressed{ std::move(reinterpret_cast<const char*>(final_destination)) };
 		std::cout << std::hex;
 		for (auto c : compressed) {
 			std::cout << +c << "  ";
