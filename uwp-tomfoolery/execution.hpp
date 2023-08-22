@@ -14,7 +14,7 @@
 #include "console.hpp"
 
 namespace exec {
-	using whsj_step_type = auto (__thiscall*)(uintptr_t, uintptr_t)->uintptr_t;
+	using whsj_step_type = auto (__thiscall*)(uintptr_t, uintptr_t)->uint32_t;
 
 	extern std::mutex pending_bytecode_mutex;
 	extern std::queue<std::string> pending_bytecode;
@@ -57,12 +57,13 @@ namespace exec {
 		console::write("Compressed and hashed bytecode (ZSTD, XXH32, XOR)", console::message_type::info);
 
 		rbx::set_identity(lua_state, 8); // we like to troll
-		console::write("Identitiy was set to 8 for funnies", console::message_type::info);
+		console::write("Identitiy was set to 8", console::message_type::info);
 		std::string compressed{ reinterpret_cast<const char*>(final_destination) };
 		std::cout << std::hex;
 		for (auto c : compressed) {
 			std::cout << +c << "  ";
 		}
+		std::cout << std::endl;
 		std::cout << std::dec;
 
 		rbx::vm_load(lua_state, &compressed);
@@ -77,7 +78,7 @@ namespace exec {
 		static constinit roblox_encoder encoder{};
 
 		// TODO: HOOK WaitingHybridScriptsJob.VMT[5] (Stepped), POP SCHEDULE QUEUE FRONT, LOCK WHEN ADDING NEW LUA PROTO
-		auto bytecode = Luau::compile("task.spawn(function()\n" + script + "\nend)", { 0, 2, 0 }, {}, &encoder); // horrendously ugly hack, crashes like all the time
+		auto bytecode = Luau::compile("task.spawn(function()\n" + script + "\nend)", { 2, 0, 0 }, {}, &encoder); // horrendously ugly hack, crashes like all the time
 		console::write("Encoded bytecode (* 0xE3, uint8_t wrap-around)", console::message_type::info);
 		// pending_bytecode.push(std::move(bytecode));
 		if (bytecode[0] == 0) {

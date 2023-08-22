@@ -48,6 +48,9 @@
     <ClCompile Include="execution.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="address.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="console.hpp">

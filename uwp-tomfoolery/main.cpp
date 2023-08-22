@@ -2,14 +2,18 @@
 #include <tuple>
 #include <thread>
 #include <string>
+#include <string_view>
 #include <format>
 #include <Windows.h>
 
 #include "console.hpp"
 #include "execution.hpp"
 
+using namespace std::literals;
+
 auto thread_main(console::handle_tuple context, HMODULE module) noexcept -> void {
 	console::set_title("uwp-tomfoolery");
+	signature::register_signatures();
 
 	auto base = reinterpret_cast<uintptr_t>(GetModuleHandle(nullptr));
 	auto scheduler = rbx::get_scheduler();
@@ -28,6 +32,10 @@ auto thread_main(console::handle_tuple context, HMODULE module) noexcept -> void
 	auto lua_state = rbx::get_lua_state(script_context);
 
 	console::write(std::format("Roblox base: {:#X}", base), console::message_type::info);
+	console::write(std::format("get_scheduler_singleton: {:#X}", address::get_scheduler_singleton), console::message_type::info);
+	console::write(std::format("get_global_state: {:#X}", address::get_global_state), console::message_type::info);
+	console::write(std::format("vm_load: {:#X}", address::vm_load), console::message_type::info);
+	console::write(std::format("task_defer: {:#X}", address::task_defer), console::message_type::info);
 	console::write(std::format("TaskScheduler: {:#X}", scheduler.address), console::message_type::info);
 	console::write(std::format("WaitingHybridScriptsJob: {:#X}", waiting_hybrid_scripts_job), console::message_type::info);
 	console::write(std::format("ScriptContext: {:#X}", script_context), console::message_type::info);
