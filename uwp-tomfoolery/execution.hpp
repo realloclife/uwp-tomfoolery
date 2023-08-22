@@ -54,10 +54,10 @@ namespace exec {
 		for (auto i = 0; i < final_size; i++) {
 			final_destination[i] ^= hash_key[i % 4] + (i * 0x29); // close your eyes and pray it works
 		}
-		console::write("Compressed and hashed bytecode (ZSTD, XXH32, XOR)", console::message_type::info);
+		console::write("Compressed and hashed bytecode (ZSTD, XXH32, XOR)");
 
 		rbx::set_identity(lua_state, 8); // we like to troll
-		console::write("Identitiy was set to 8", console::message_type::info);
+		console::write("Identitiy was set to 8");
 		std::string compressed{ reinterpret_cast<const char*>(final_destination) };
 		std::cout << std::hex;
 		for (auto c : compressed) {
@@ -67,11 +67,11 @@ namespace exec {
 		std::cout << std::dec;
 
 		rbx::vm_load(lua_state, &compressed);
-		console::write("Called vm_load on compressed bytecode", console::message_type::info);
+		console::write("Called vm_load on compressed bytecode");
 		rbx::task_defer(lua_state);
-		console::write("Spawned new proto via lua_State", console::message_type::info);
+		console::write("Spawned new proto via lua_State");
 		rbx::pop_stack(lua_state, 1);
-		console::write("Popped proto off the stack", console::message_type::info);
+		console::write("Popped proto off the stack");
 	}
 
 	static auto execute_script(uintptr_t lua_state, std::string& script) -> void {
@@ -79,7 +79,7 @@ namespace exec {
 
 		// TODO: HOOK WaitingHybridScriptsJob.VMT[5] (Stepped), POP SCHEDULE QUEUE FRONT, LOCK WHEN ADDING NEW LUA PROTO
 		auto bytecode = Luau::compile("task.spawn(function()\n" + script + "\nend)", { 2, 0, 0 }, {}, &encoder); // horrendously ugly hack, crashes like all the time
-		console::write("Encoded bytecode (* 0xE3, uint8_t wrap-around)", console::message_type::info);
+		console::write("Encoded bytecode (* 0xE3, uint8_t wrap-around)");
 		// pending_bytecode.push(std::move(bytecode));
 		if (bytecode[0] == 0) {
 			console::write("Error while compiling into bytecode", console::message_type::error);
